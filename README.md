@@ -1,6 +1,6 @@
-🎰 NC Lottery Number Generator
+🎰 USA Lottery Number Generator
 
-A Flask web application that generates 5 sets of Mega Millions lottery numbers for North Carolina using various generation methods including random, frequency analysis, and past winner selection.
+A Flask web application that generates 5 sets of Mega Millions lottery numbers for USA using various generation methods including random, frequency analysis, and past winner selection.
 
 ## ✨ Features
 
