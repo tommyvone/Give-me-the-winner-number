@@ -25,16 +25,20 @@ def generate_numbers():
         # In production, you'd replace this with actual API calls
         historical_data = get_mock_historical_data(selected_date)
         
-        if generation_method == 'frequency':
-            numbers = generate_by_frequency(historical_data)
-        elif generation_method == 'past_winner':
-            numbers = select_past_winner(historical_data)
-        else:
-            numbers = generate_random_numbers()
+        # Generate 5 sets of numbers
+        number_sets = []
+        for i in range(5):
+            if generation_method == 'frequency':
+                numbers = generate_by_frequency(historical_data)
+            elif generation_method == 'past_winner':
+                numbers = select_past_winner(historical_data)
+            else:
+                numbers = generate_random_numbers()
+            number_sets.append(numbers)
         
         return jsonify({
             'success': True,
-            'numbers': numbers,
+            'numbers': number_sets,
             'date': selected_date,
             'method': generation_method
         })

@@ -89,15 +89,38 @@
 
         .numbers-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            flex-direction: column;
+            gap: 15px;
             margin: 20px 0;
         }
 
+        .number-set {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .set-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .numbers-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
         .number-ball {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -105,7 +128,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .mega-ball {
@@ -164,7 +187,7 @@
         </form>
         
         <div id="results" class="results">
-            <h3>Your Mega Millions Numbers:</h3>
+            <h3>Your 5 Sets of Mega Millions Numbers:</h3>
             <div id="numbersDisplay" class="numbers-container"></div>
             <div id="methodInfo" class="info"></div>
         </div>
@@ -212,26 +235,41 @@
             // Clear previous numbers
             numbersDisplay.innerHTML = '';
             
-            // Display white balls
-            data.numbers.white_balls.forEach(number => {
-                const ball = document.createElement('div');
-                ball.className = 'number-ball';
-                ball.textContent = number;
-                numbersDisplay.appendChild(ball);
+            // Display all 5 sets of numbers
+            data.numbers.forEach((numberSet, index) => {
+                // Create container for each set
+                const setContainer = document.createElement('div');
+                setContainer.className = 'number-set';
+                setContainer.innerHTML = `<div class="set-label">Set ${index + 1}:</div>`;
+                
+                const setNumbers = document.createElement('div');
+                setNumbers.className = 'numbers-row';
+                
+                // Display white balls
+                numberSet.white_balls.forEach(number => {
+                    const ball = document.createElement('div');
+                    ball.className = 'number-ball';
+                    ball.textContent = number;
+                    setNumbers.appendChild(ball);
+                });
+                
+                // Add separator
+                const separator = document.createElement('div');
+                separator.textContent = '+';
+                separator.style.fontSize = '20px';
+                separator.style.color = '#666';
+                separator.style.margin = '0 5px';
+                setNumbers.appendChild(separator);
+                
+                // Display mega ball
+                const megaBall = document.createElement('div');
+                megaBall.className = 'number-ball mega-ball';
+                megaBall.textContent = numberSet.mega_ball;
+                setNumbers.appendChild(megaBall);
+                
+                setContainer.appendChild(setNumbers);
+                numbersDisplay.appendChild(setContainer);
             });
-            
-            // Add separator
-            const separator = document.createElement('div');
-            separator.textContent = '+';
-            separator.style.fontSize = '24px';
-            separator.style.color = '#666';
-            numbersDisplay.appendChild(separator);
-            
-            // Display mega ball
-            const megaBall = document.createElement('div');
-            megaBall.className = 'number-ball mega-ball';
-            megaBall.textContent = data.numbers.mega_ball;
-            numbersDisplay.appendChild(megaBall);
             
             // Show method info
             const methodNames = {
