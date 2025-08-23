@@ -149,6 +149,71 @@
             margin-top: 15px;
         }
 
+        .lottery-ticket {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+        }
+
+        .lottery-ticket h3 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .ticket-instructions {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .ticket-numbers {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin: 15px 0;
+        }
+
+        .ticket-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dotted #ccc;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .ticket-row:last-child {
+            border-bottom: none;
+        }
+
+        .ticket-set-label {
+            color: #667eea;
+            font-weight: bold;
+            min-width: 60px;
+        }
+
+        .ticket-numbers-display {
+            color: #333;
+            letter-spacing: 2px;
+        }
+
+        .ticket-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .ticket-footer p {
+            margin: 5px 0;
+            color: #555;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 20px;
@@ -160,6 +225,16 @@
             
             .numbers-container {
                 flex-wrap: wrap;
+            }
+            
+            .ticket-row {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+            
+            .ticket-numbers-display {
+                font-size: 16px;
             }
         }
     </style>
@@ -196,6 +271,16 @@
             <h3>Your 5 Sets of Mega Millions Numbers:</h3>
             <div id="numbersDisplay" class="numbers-container"></div>
             <div id="methodInfo" class="info"></div>
+            
+            <div id="lotteryTicket" class="lottery-ticket">
+                <h3>📋 NC Lottery Playslip Format</h3>
+                <p class="ticket-instructions">Copy these numbers to your official NC Lottery Mega Millions playslip:</p>
+                <div id="ticketNumbers" class="ticket-numbers"></div>
+                <div class="ticket-footer">
+                    <p><strong>Reminder:</strong> Fill in these numbers on your official NC Lottery Mega Millions playslip</p>
+                    <p><strong>Good luck!</strong> 🍀</p>
+                </div>
+            </div>
         </div>
         
         <div id="error" class="error" style="display: none;"></div>
@@ -300,8 +385,40 @@
                 <strong>Reference Date:</strong> ${data.date}
             `;
             
+            // Generate lottery ticket format
+            generateLotteryTicket(data.numbers);
+            
             resultsDiv.style.display = 'block';
             document.getElementById('clearButtonContainer').style.display = 'block';
+        }
+        
+        function generateLotteryTicket(numberSets) {
+            const ticketNumbers = document.getElementById('ticketNumbers');
+            ticketNumbers.innerHTML = '';
+            
+            numberSets.forEach((numberSet, index) => {
+                const ticketRow = document.createElement('div');
+                ticketRow.className = 'ticket-row';
+                
+                const setLabel = document.createElement('div');
+                setLabel.className = 'ticket-set-label';
+                setLabel.textContent = `Set ${index + 1}:`;
+                
+                const numbersDisplay = document.createElement('div');
+                numbersDisplay.className = 'ticket-numbers-display';
+                
+                // Format: "01 15 23 45 67 + MB: 12"
+                const formattedWhiteBalls = numberSet.white_balls
+                    .map(num => num.toString().padStart(2, '0'))
+                    .join(' ');
+                const formattedMegaBall = numberSet.mega_ball.toString().padStart(2, '0');
+                
+                numbersDisplay.textContent = `${formattedWhiteBalls} + MB: ${formattedMegaBall}`;
+                
+                ticketRow.appendChild(setLabel);
+                ticketRow.appendChild(numbersDisplay);
+                ticketNumbers.appendChild(ticketRow);
+            });
         }
         
         function showError(message) {
