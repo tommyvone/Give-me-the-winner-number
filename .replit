@@ -6,6 +6,10 @@ hidden = [".pythonlibs"]
 [nix]
 channel = "stable-23_05"
 
+[env]
+REPLIT_DISABLE_PACKAGE_LAYER = "1"
+REPLIT_KEEP_PACKAGE_DEV_DEPENDENCIES = "1"
+
 [deployment]
 run = ["sh", "-c", "python3 main.py"]
 deploymentTarget = "cloudrun"
