@@ -186,6 +186,12 @@
             <button type="submit" class="btn">🎲 Generate My Numbers!</button>
         </form>
         
+        <div class="form-group" id="clearButtonContainer" style="display: none; margin-top: 20px;">
+            <button type="button" id="clearBtn" class="btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+                🔄 Clear & Generate New Numbers
+            </button>
+        </div>
+        
         <div id="results" class="results">
             <h3>Your 5 Sets of Mega Millions Numbers:</h3>
             <div id="numbersDisplay" class="numbers-container"></div>
@@ -198,6 +204,17 @@
     <script>
         // Set today's date as default
         document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        
+        // Clear button functionality
+        document.getElementById('clearBtn').addEventListener('click', function() {
+            // Hide results and clear button
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('clearButtonContainer').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            
+            // Generate new numbers automatically
+            document.getElementById('lotteryForm').dispatchEvent(new Event('submit'));
+        });
         
         document.getElementById('lotteryForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -284,6 +301,7 @@
             `;
             
             resultsDiv.style.display = 'block';
+            document.getElementById('clearButtonContainer').style.display = 'block';
         }
         
         function showError(message) {
