@@ -127,6 +127,14 @@ def generate_random_numbers():
         'white_balls': white_balls,
         'mega_ball': mega_ball
     }
+def generate_random_numbers(func):
+    def generate_numbers():
+        return func().upper()
+    return generate_numbers
+    
+@generate_random_numbers
+def generate_numbers():
+    return generate_numbers
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
